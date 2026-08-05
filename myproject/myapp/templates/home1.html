@@ -1,0 +1,224 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gperi.Bot</title>
+    <link rel="icon" href="{% static 'images/bot.png' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
+</head>
+<body>
+
+
+    <div class="main">
+        <div class="left p-3">
+            <div class="d-flex justify-content-between align-items-center  py-4 mb-3">
+                <h4 class="mb-0 text-white-50">GPERI.BOT</h4>
+                <span id="closeSidebar"><i class="fa-regular fa-circle-left fs-4 text-white-50"></i></span>
+            </div>
+            <div class="">
+                <form action="/newchat/" method="post">
+                    {% csrf_token %}
+                <button type="submit" class="newchat btn btn-primary border-0  rounded-pill px-3 mb-4"><i class="fa-regular fa-message me-2 small"></i> 
+                    New Chat <i class="fa-solid fa-plus small ms-2"></i>
+                </button>
+            </form>
+            <h6 class="text-secondary small">History</h6>
+            <div class="sidebar-height">
+            {% for c in chats_list %}
+                    
+            <div class=" d-flex justify-content-between bg-secondary px-3 py-1 rounded align-items-center mb-3">
+                <span class="text-white">{{ c.Message }}</span>
+                <span>
+                    <button class="btn border-0 rounded-pill mb-1 px-1">
+                        <a href="/home1/{{c.Temptoken}}"><i class="fa-regular fa-message text-white"></i></a>
+                    </button>
+                    <button class="btn btn-outline-danger border-0 rounded-pill mb-1 px-2">
+                        <a onclick="deleteChat({{c.Temptoken}});" href="#delete" data-bs-toggle="modal"><i class="fa-regular fa-trash-can text-white"></i></a>
+                    </button>
+                </span>
+            </div>
+        {% endfor %}
+        </div>
+
+                <!--Delete Modal-->
+                <div class="modal" id="delete">
+                    <div class="modal-dialog modal-dialog-centered modal-sm">
+                        <div class="modal-content  bg-secondary" style="-background-color: #1c1b1b;">
+                            <div class="modal-body text-center">
+                                <i class="fa-regular fa-trash-can text-danger fs-1 mb-3"></i> 
+                                <h6 class="mb-3 text-light">Are you sure,<br> you want delete this record ?</h6>
+                                <form method="post" action="/deletechat/">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm small">Yes,Confirm</button>
+                                    <input type="hidden" name="tknNo" id="tknNo">
+                                </form>
+                                <button type="button" class="btn btn-primary btn-sm small" data-bs-dismiss="modal">No,Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!---Modal End-->
+        {% comment %} <div class="left p-3">
+            <div class="d-flex justify-content-between align-items-center  py-4 mb-3">
+                <h4 class="mb-0 text-white-50">GPERI.BOT</h4>
+                <i class="fa-regular fa-circle-left fs-4 text-white-50"></i>
+            </div>
+            <div class="">
+                <button class="newchat btn btn-primary border-0  rounded-pill px-3 mb-4"><i class="fa-regular fa-message me-2 small"></i> New Chat <i class="fa-solid fa-plus small ms-2"></i></button>
+
+                <h6 class="text-secondary small">Today</h6>
+                <div class=" d-flex justify-content-between bg-secondary px-3 py-1 rounded align-items-center">
+                    <span class="text-white">Hi</span>
+                    <button class="btn btn-outline-danger border-0 rounded-pill   mb-1">
+                        <a href="#"><i class="fa-regular fa-trash-can text-white"></i></a>
+                    </button>
+                </div> {% endcomment %}
+
+                {% if request.session.userID %}
+                <div class="dropup-center dropup position-absolute" style="bottom:15px;">
+                    <button class="btn bg-transparent dropdown-toggle d-flex gap-3 align-items-center py-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {% comment %} <img src="https://www.pngall.com/wp-content/uploads/5/Profile-Avatar-PNG-Picture.png" width="40" alt=""> {% endcomment %}
+                        
+                            <img src="https://www.pngall.com/wp-content/uploads/5/Profile-Avatar-PNG-Picture.png" width="40" alt="">
+                            <h6 class="text-white-50 mb-0">My Profile</h6>
+                       
+                    </button>
+                    <ul class="dropdown-menu py-0">
+                      <li><a class="dropdown-item bg-secondary py-2 rounded" href="#logout" data-bs-toggle="modal">Log Out</a></li>
+                    </ul>
+                  </div>
+                  {% endif %}
+
+                  {% if request.session.userID  %}
+                    {% else %}
+                    <div class="pe-5 me-5  position-absolute" style="bottom:15px;">
+                        <a href="/login">
+                        <button class="btn bg-black text-white rounded-pill"> Log in </button></a>
+                        <a href="/register">
+                        <button class="btn bg-white text-black rounded-pill">Sign Up</button></a>
+                    </div>
+                {% endif %}
+                  
+
+                   <!--Logout Modal-->
+                   <div class="modal" id="logout">
+                    <div class="modal-dialog modal-dialog-centered modal-sm">
+                        <div class="modal-content  bg-secondary">
+                            <div class="modal-body text-center">
+                                <!-- <i class="fa-regular fa-trash-can text-danger fs-1 mb-3"></i>  -->
+                               <form method="post" action="/logout/">
+                                {% csrf_token %}
+                                <i class="fa-solid fa-arrow-right-from-bracket text-danger fs-1 mb-3"></i>
+                                <h6 class="mb-3 text-light">Are you sure,<br> you want to logout ?</h6>
+                                <button type="submit" class="btn btn-danger btn-sm small">Yes,Confirm</button>
+                                <button type="button" class="btn btn-primary btn-sm small" data-bs-dismiss="modal">No,Cancel</button>
+                               </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <!---Modal End-->
+                
+            </div>
+        </div>
+        <div class="right p-4">
+            <button class="openSidebar btn btn-sm text-white"><i class="fa-regular fs-4 text-white-50 fa-circle-right"></i></button>
+
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center ps-5 ms-5 gap-3 mb-0">
+                    <img src="{% static 'images/bot.png'%}" width="70" alt="">
+                    <h4 class="text-white-50 mb-0">GPERI.BOT</h4>
+                </div>
+
+                
+            </div>
+            
+
+            
+            <hr class="text-white">
+
+            <div class="mx-5 px-5 chat-history" style="max-height:430px;overflow-y:auto;">
+                {% for q in chatHistory %}
+                    {% if q.Type == "Sender" %}
+                        <div class="text-end">
+                            <p class="text-white mb-1  d-inline-block p-2 px-3 rounded small"  style="background-color: #333;">{{q.Message}}</p>
+                        </div>
+                    {% else %}
+                        <div class="d-inline-flex gap-2 text-white-50 align-items-center" >
+                            <img src="{% static 'images/bot.png'%}" width="35" alt="">
+                            <p class="mb-0 p-2 px-3 rounded" style="background-color: #333;">{{q.Message}}</p>
+                        </div>
+                    {% endif %}
+
+               
+                {% endfor %}
+                
+                <div class="p-3" id="bottom-ans"></div>
+            </div>
+            
+
+<!-- 
+            <div class="text-white">
+
+                <div class="d-flex gap-3 align-items-center mb-3">
+                    <img class="bot" src="../images/bot.png" alt="">
+                    <h4 class="mb-0 ">Hi, I am GPERI.BOT</h4>
+                </div>
+
+                <span class="small text-white-50 ms-5">How can I help you today?</span>
+            </div> -->
+
+            {% comment %} <div class="bottom-chat-sec d-flex gap-3 align-items-center py-2">
+                <input type="text" class="border-0" placeholder="Message to GPERI.BOT">
+               <i class="send fa-regular rounded-circle fa-circle-up fs-2 text-white-50"></i>
+            </div> {% endcomment %}
+            <form method="post" action="/home/" autocomplete="off" >
+                {% csrf_token %}
+            <div class="bottom-chat-sec d-flex gap-3 align-items-center py-2">
+                <input name="message" type="text" class="border-0 bg-transparent" placeholder="Message to GPERI.BOT">
+                <button class="btn btn-dark bg-transparent border-0"><i class="send fa-regular rounded-circle fa-circle-up fs-2 text-white-50"></i></button>
+            </div>
+            
+        </form> 
+       
+        </div>
+        
+    </div>
+    
+    
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="{% static '/js/bootstrap.bundle.min.js'%}"></script>
+
+    <script>
+        function deleteChat(token){
+            $("#tknNo").val(token)
+        }
+        $(function(){
+            $("#closeSidebar").click(function(){
+                $(".main .right").toggleClass("fullwidth");
+                $(".main .left").toggleClass("active");
+                $(".openSidebar").toggleClass("openSd");
+            })
+
+            $(".openSidebar").click(function(){
+                $(".main .right").toggleClass("fullwidth");
+                $(".main .left").toggleClass("active");
+                $(".openSidebar").toggleClass("openSd");
+            })
+        })
+    </script>
+    <script>
+        window.onload = function(){
+            document.getElementById("bottom-ans").scrollIntoView();
+        };
+
+    </script>
+
+</body>
+</html>

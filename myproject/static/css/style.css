@@ -1,0 +1,143 @@
+:root{
+    --primary-color:#0d1013;
+}
+
+.btn-theme,
+.btn-theme:hover{
+    background-color: var(--primary-color);
+}
+
+
+.name{
+    color: #045650;
+    background-color: #7CB0A4;
+}
+
+.gtu{
+    color:#045650;
+}
+
+
+
+.bg{
+    height: 89vh;
+}
+.sidebar-height{
+    -border: 1px solid red;
+    max-height: calc(100vh - 270px);
+    overflow-y: auto;
+}
+.bootom-sec{
+    -border: 1px solid red;
+    padding: 15px;text-align: center;
+    background-color: rgba(0,0,0,0.5);
+    position: absolute;
+    left: 0;right: 0;bottom: 0;color: white;
+}
+
+.login-box{
+    max-width: 400px;
+    width: 100%;
+}
+
+.main{
+    -border: 1px solid red;
+    height: 100vh;
+    display: flex;
+}
+.main .left{
+    width: 20%;
+    background-color: #1c1b1b;
+    transition: 0.5s;
+}
+.main .right{
+    width: calc(100% - 20%);
+    background-color: #292A2D;position: relative; 
+    flex-grow: 1;
+}
+.main .left.active{
+    margin-left: -20%;
+}
+.main .right.fullwidth{
+    width: calc(100% - 0%);
+}
+.openSidebar{
+    opacity: 0;
+}
+
+.openSidebar.openSd{
+    opacity: 1;
+}
+
+.bottom-chat-sec{
+    -border: 1px solid red;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 30px;
+    background-color: #404045;
+    box-shadow: 0 0 0 .5px rgba(192,192,192,.3);
+    padding: 20px;
+    width: 80%;
+    border-radius: 50px;
+}
+.bottom-chat-sec input{
+    width: 100%;
+    background-color: transparent;
+    padding: 15px;color: white;
+    -border: 2px solid red !important;
+}
+
+.bottom-chat-sec input:focus{
+    border: 0;
+    outline: 0;
+    background-color: transparent;
+}
+.bottom-chat-sec input:hover{
+    background-color: transparent;
+}
+.bot{
+    width: 85px;
+
+}
+.newchat{
+    background-color: #42A3F2;
+    color: white;
+}
+
+
+.send:hover{
+    color: #fff !important;
+    -box-shadow:  0 3px 7px white;
+}
+.chat-history::-webkit-scrollbar,
+.sidebar-height::-webkit-scrollbar{
+    scrollbar-width: thin;
+}
+
+.bott{
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.bott::after{
+    content: '';
+    width: 0;
+    height: 100%;
+    position: absolute;
+    left: 0;top: 0;
+    background-color: #045650;
+    transition: 1s;
+    z-index: -1;
+}
+.bott:hover::after{
+    width: 100%;
+}
+
+
+/* .bott:hover{
+
+    background-color: white;
+
+} */
